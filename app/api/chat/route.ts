@@ -13,7 +13,7 @@ export async function POST(req: Request) {
   const websiteContent = await getWebsiteContent();
 
   const response = await openai.chat.completions.create({
-    model: 'gpt-4',
+    model: 'gpt-4o-mini',
     stream: true,
     messages: [
       {

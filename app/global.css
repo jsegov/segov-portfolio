@@ -15,6 +15,8 @@
   --sh-jsxliterals: #6266d1;
   --sh-property: #e25a1c;
   --sh-entity: #e25a1c;
+  --foreground-rgb: 255, 255, 255;
+  --background-rgb: 0, 0, 0;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -147,4 +149,44 @@ table {
 
 .title {
   text-wrap: balance;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: rgb(var(--background-rgb));
+  font-family: 'Courier New', Courier, monospace;
+}
+
+/* Terminal-like styles */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Courier New', Courier, monospace;
+}
+
+a {
+  color: rgb(var(--foreground-rgb));
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+a:hover {
+  opacity: 0.8;
+}
+
+/* Terminal cursor effect */
+.terminal-cursor::after {
+  content: '_';
+  animation: cursor 1s infinite;
+}
+
+@keyframes cursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Terminal window styles */
+.terminal-window {
+  border: 1px solid rgb(var(--foreground-rgb));
+  background: rgb(var(--background-rgb));
+  padding: 1rem;
+  margin: 1rem 0;
 }

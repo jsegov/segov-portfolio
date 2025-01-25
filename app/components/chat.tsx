@@ -21,7 +21,7 @@ export default function Chat() {
       {!isOpen ? (
         <button
           onClick={() => setIsOpen(true)}
-          className="bg-black text-white rounded-full p-4 shadow-lg hover:bg-gray-800 transition-colors"
+          className="bg-black text-white rounded-none p-4 shadow-lg hover:bg-gray-900 transition-colors font-mono border border-white"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -39,12 +39,12 @@ export default function Chat() {
           </svg>
         </button>
       ) : (
-        <div className="bg-gray-700 rounded-lg shadow-xl w-80 h-96 flex flex-col">
-          <div className="p-4 border-b flex justify-between items-center">
-            <h3 className="font-semibold">ask me anything</h3>
+        <div className="bg-black border border-white rounded-none shadow-xl w-80 h-96 flex flex-col font-mono">
+          <div className="p-2 border-b border-white flex justify-between items-center bg-black">
+            {/* <h3 className="font-mono text-white">terminal</h3> */}
             <button
               onClick={() => setIsOpen(false)}
-              className="text-gray-500 hover:text-gray-700"
+              className="text-white hover:text-gray-300"
               aria-label="Close chat"
             >
               <svg
@@ -64,7 +64,7 @@ export default function Chat() {
             </button>
           </div>
           
-          <div className="flex-1 overflow-y-auto p-4 space-y-4">
+          <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-black">
             {messages.map((message) => (
               <div
                 key={message.id}
@@ -73,7 +73,9 @@ export default function Chat() {
                 }`}
               >
                 <div
-                  className={`max-w-[80%] rounded-lg p-3 bg-black text-white`}
+                  className={`max-w-[80%] p-1 ${
+                    message.role === 'assistant' ? 'text-white' : 'text-gray-300'
+                  }`}
                 >
                   {message.content}
                 </div>
@@ -82,20 +84,14 @@ export default function Chat() {
             <div ref={messagesEndRef} />
           </div>
 
-          <form onSubmit={handleSubmit} className="p-4 border-t bg-gray-700">
-            <div className="flex gap-2">
+          <form onSubmit={handleSubmit} className="p-2 border-t border-white bg-black">
+            <div className="flex">
               <input
                 value={input}
                 onChange={handleInputChange}
-                placeholder="Ask me anything..."
-                className="flex-1 bg-gray-700 p-2 focus:outline-none"
+                placeholder="ask me anything"
+                className="w-full bg-black text-white focus:outline-none font-mono placeholder-gray-600 px-0"
               />
-              <button
-                type="submit"
-                className="bg-black text-white rounded-lg px-4 py-1.5 hover:bg-gray-800 transition-colors"
-              >
-                Send
-              </button>
             </div>
           </form>
         </div>

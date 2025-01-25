@@ -48,7 +48,7 @@ export const text = {
         title: 'online portfolio',
         description: 'this, a portfolio website deployed on vercel and built using Next.js, React, TailwindCSS and telling cursor what to do. info about my experience as a swe, and an AI-powered chatbot that i added so i can say i have gen ai experience.',
         githubUrl: 'https://github.com/jsegov/segov-portfolio',
-        technologies: ['Next.js', 'React', 'TypeScript', 'TailwindCSS', 'vercel', 'gen ai', 'cursor']
+        technologies: ['Next.js', 'React', 'TailwindCSS', 'vercel', 'gen ai', 'cursor']
       }
     ]
   },

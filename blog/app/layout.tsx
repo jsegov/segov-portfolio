@@ -7,20 +7,19 @@ import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import Footer from './components/footer'
 import { baseUrl } from './sitemap'
-import Chat from './components/chat'
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: 'segov.dev',
-    template: '%s | segov.dev',
+    default: 'Next.js Portfolio Starter',
+    template: '%s | Next.js Portfolio Starter',
   },
-  description: 'portfolio website for jonathan segovia',
+  description: 'This is my portfolio.',
   openGraph: {
-    title: 'segov.dev',
-    description: 'portfolio website for jonathan segovia',
+    title: 'My Portfolio',
+    description: 'This is my portfolio.',
     url: baseUrl,
-    siteName: 'segov.dev',
+    siteName: 'My Portfolio',
     locale: 'en_US',
     type: 'website',
   },
@@ -48,7 +47,7 @@ export default function RootLayout({
     <html
       lang="en"
       className={cx(
-        'text-black bg-white dark:text-white dark:bg-black lowercase',
+        'text-black bg-white dark:text-white dark:bg-black',
         GeistSans.variable,
         GeistMono.variable
       )}
@@ -60,7 +59,6 @@ export default function RootLayout({
           <Footer />
           <Analytics />
           <SpeedInsights />
-          <Chat />
         </main>
       </body>
     </html>

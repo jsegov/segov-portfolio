@@ -3,7 +3,7 @@ export const text = {
     title: 'hello world',
     description: `my name is jonathan segovia, but some people call me segov. i am currently a swe at jeff bezos' online bookstore where i help automate content publishing at our netflix clone. previously i was a swe at workday where i played ping pong, attended happy hours, and failed at convincing leadership that workday was slow due to it's flawed design. i attended ucsb (aka paradise on earth), where i majored in computer science and minored in binge drinking. 
     
-    obviously this is a satirical summary of my professionaly relevant experience, if you wanna read more serious descriptions of my work experience you can check the career page or my linkedin. to learn more about my side projects check out the projects page or my github. or if you'd like to learn more about me in chatbot form, you can click the chat icon in the bottom right corner and ask it anything about me (but please don't spam so i don't burn through all my openai credits).
+    obviously this is a satirical summary of my relevant experience, if you wanna read more serious descriptions of my work experience you can check the career page or my linkedin. to learn more about my side projects check out the projects page or my github. or if you'd like to learn more about me in chatbot form, you can click the chat icon in the bottom right corner and ask it anything about me (but please don't spam so i don't burn through all my openai credits).
     `
   },
   career: {

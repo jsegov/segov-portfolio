@@ -1,52 +1,76 @@
-import OpenAI from 'openai';
 import { OpenAIStream, StreamingTextResponse } from 'ai';
-import { getWebsiteContent } from '../../utils/content';
-
-const getOpenAIClient = () => {
-  const provider = process.env.MODEL_PROVIDER;
-  
-  if (provider === 'deepseek') {
-    return new OpenAI({
-      apiKey: process.env.DEEPSEEK_API_KEY,
-      baseURL: 'https://api.deepseek.com'
-    });
-  }
-  
-  // Default to OpenAI
-  return new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-  });
-};
-
-const getModelName = () => {
-  const provider = process.env.MODEL_PROVIDER;
-  return provider === 'deepseek' ? 'deepseek-chat' : 'gpt-4o-mini';
-};
 
 export const runtime = 'edge';
 
 export async function POST(req: Request) {
-  const { messages } = await req.json();
-  const websiteContent = await getWebsiteContent();
-  const openai = getOpenAIClient();
+  try {
+    const body = await req.json();
+    const messages = body.messages ?? [];
+    
+    // If there's no system message in the incoming messages,
+    // fetch it from the context endpoint
+    if (!messages.some(m => m.role === 'system')) {
+      const contextResponse = await fetch(new URL('/api/chat/context', req.url));
+      if (contextResponse.ok) {
+        const systemContent = await contextResponse.text();
+        messages.unshift({ role: 'system', content: systemContent });
+      }
+    }
 
-  const response = await openai.chat.completions.create({
-    model: getModelName(),
-    stream: true,
-    messages: [
-      {
-        role: 'system',
-        content: `You are Jonathan Segovia's portfolio assistant. Answer questions about Jonathan's experience, projects, and skills using the following website content. Be concise and professional. For unrelated topics, politely redirect to portfolio topics.
+    const isDeepseek = process.env.MODEL_PROVIDER === 'deepseek';
+    const apiUrl = isDeepseek 
+      ? 'https://api.deepseek.com/v1/chat/completions' 
+      : 'https://api.openai.com/v1/chat/completions';
+    
+    const apiKey = isDeepseek 
+      ? process.env.DEEPSEEK_API_KEY 
+      : process.env.OPENAI_API_KEY;
 
-Website Content:
-${websiteContent}
+    if (!apiKey) {
+      throw new Error('API key not configured');
+    }
 
-If information isn't in the content above, acknowledge that you don't have that specific detail.`
+    const response = await fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${apiKey}`,
       },
-      ...messages
-    ],
-  });
+      body: JSON.stringify({
+        model: isDeepseek ? 'deepseek-chat' : 'gpt-4o-mini',
+        messages: messages.map(message => ({
+          role: message.role,
+          content: message.content
+        })),
+        stream: true,
+        max_tokens: 1000,
+        temperature: 0.7,
+      }),
+    });
 
-  const stream = OpenAIStream(response);
-  return new StreamingTextResponse(stream);
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({}));
+      throw new Error(
+        `API request failed: ${response.status} ${response.statusText}\n${JSON.stringify(error, null, 2)}`
+      );
+    }
+
+    // Create a TransformStream to handle the response
+    const stream = OpenAIStream(response);
+    return new StreamingTextResponse(stream);
+  } catch (error) {
+    console.error('Chat API Error:', error);
+    return new Response(
+      JSON.stringify({
+        error: 'An error occurred during the chat request',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      }), 
+      { 
+        status: 500,
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      }
+    );
+  }
 } 

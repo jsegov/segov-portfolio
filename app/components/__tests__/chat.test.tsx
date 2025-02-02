@@ -16,6 +16,7 @@ jest.mock('ai/react', () => ({
     input: '',
     handleInputChange: jest.fn(),
     handleSubmit: jest.fn(),
+    isLoading: false,
   }),
 }))
 
@@ -31,8 +32,8 @@ describe('Chat', () => {
     const button = screen.getByRole('button')
     fireEvent.click(button)
     
-    expect(screen.getByText('ask me anything')).toBeInTheDocument()
-    expect(screen.getByPlaceholderText('Ask me anything...')).toBeInTheDocument()
+    const input = screen.getByPlaceholderText('ask me anything')
+    expect(input).toBeInTheDocument()
   })
 
   it('closes chat window when close button is clicked', () => {
@@ -43,7 +44,7 @@ describe('Chat', () => {
     fireEvent.click(screen.getByLabelText('Close chat'))
     
     // Chat window should be closed, only chat button visible
-    expect(screen.queryByText('ask me anything')).not.toBeInTheDocument()
+    expect(screen.queryByPlaceholderText('ask me anything')).not.toBeInTheDocument()
   })
 
   it('displays messages correctly', () => {

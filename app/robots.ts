@@ -1,12 +1,8 @@
-import { baseUrl } from 'app/sitemap'
-
-export default function robots() {
-  return {
-    rules: [
-      {
-        userAgent: '*',
-      },
-    ],
-    sitemap: `${baseUrl}/sitemap.xml`,
-  }
+export const robots = {
+  rules: [
+    {
+      userAgent: '*',
+    },
+  ],
+  sitemap: `${process.env.NEXT_PUBLIC_URL || 'https://segov.app'}/sitemap.xml`,
 }

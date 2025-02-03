@@ -46,18 +46,30 @@ Key features:
 - OpenAI API key
 
 ### Environment Setup
-1. Clone the repository
+1. Install pnpm (if not already installed)
+```bash
+# Using npm
+npm install -g pnpm
+
+# Using curl (Linux/macOS)
+curl -fsSL https://get.pnpm.io/install.sh | sh -
+
+# Using Homebrew (macOS)
+brew install pnpm
+```
+
+2. Clone the repository
 ```bash
 git clone https://github.com/jsegov/segov-portfolio.git
 cd segov-portfolio
 ```
 
-2. Install dependencies
+3. Install dependencies
 ```bash
 pnpm install
 ```
 
-3. Set up environment variables
+4. Set up environment variables
 ```bash
 cp .env.example .env.local
 ```

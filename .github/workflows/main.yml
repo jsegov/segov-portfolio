@@ -18,6 +18,8 @@ jobs:
       with:
         node-version: '18'
     
+    # Install and cache pnpm
+    # Note: pnpm is automatically installed by the action-setup step
     - name: Setup pnpm
       uses: pnpm/action-setup@v2
       with:

@@ -40,6 +40,7 @@ Key features:
 
 ### Prerequisites
 - Node.js 18+
+- pnpm 8+
 - Deno 1.37+
 - Supabase CLI
 - OpenAI API key
@@ -53,7 +54,7 @@ cd segov-portfolio
 
 2. Install dependencies
 ```bash
-npm install
+pnpm install
 ```
 
 3. Set up environment variables
@@ -82,7 +83,7 @@ supabase start
 
 2. Run the development server
 ```bash
-npm run dev
+pnpm dev
 ```
 
 3. Start the edge functions
@@ -98,7 +99,7 @@ The application will be available at `http://localhost:3000`
 #### Frontend Tests
 Run Jest tests for the frontend components:
 ```bash
-npm test
+pnpm test
 ```
 
 #### Edge Function Tests
@@ -117,7 +118,7 @@ deno test --allow-env --allow-net tests/chat-api-test.ts
 
 ### Building for Production
 ```bash
-npm run build
+pnpm build
 ```
 
 ## Deployment

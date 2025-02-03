@@ -47,20 +47,26 @@ jobs:
     - name: Install Dependencies
       run: pnpm install --no-frozen-lockfile
     
-    - name: Run Frontend Tests
+    - name: Run Frontend Tests (Jest)
       run: pnpm test
       env:
         OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
         SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
     
-    - name: Run Edge Function Tests
-      run: |
-        cd supabase/functions
-        deno test --allow-env --allow-net
+    - name: Run Edge Function Tests (Deno)
+      run: pnpm test:edge
       env:
         OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         SITE_URL: http://localhost:3000
+    
+    - name: Build Frontend
+      run: pnpm build
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+        SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        SITE_URL: https://${{ secrets.VERCEL_PROJECT_ID }}.vercel.app
     
   deploy:
     needs: test

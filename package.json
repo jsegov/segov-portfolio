@@ -5,8 +5,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest",
-    "test:watch": "jest --watch"
+    "test": "jest --testPathIgnorePatterns='<rootDir>/supabase/functions/'",
+    "test:frontend": "jest --testPathIgnorePatterns='<rootDir>/supabase/functions/'",
+    "test:watch": "jest --testPathIgnorePatterns='<rootDir>/supabase/functions/' --watch",
+    "test:edge": "cd supabase/functions && deno test --allow-env --allow-net tests/"
   },
   "dependencies": {
     "@langchain/openai": "^0.4.2",

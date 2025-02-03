@@ -109,24 +109,30 @@ The application will be available at `http://localhost:3000`
 ### Testing
 
 #### Frontend Tests
-Run Jest tests for the frontend components:
+The frontend uses Jest for testing React components and API routes:
 ```bash
+# Run all frontend tests
 pnpm test
+
+# Alternative command for frontend tests
+pnpm test:frontend
+
+# Run frontend tests in watch mode
+pnpm test:watch
 ```
 
 #### Edge Function Tests
-The edge functions use Deno's built-in testing framework. Tests are located in `supabase/functions/tests/`.
-
-Run all edge function tests:
+Edge functions use Deno's built-in testing framework and are located in `supabase/functions/tests/`:
 ```bash
+# Run all edge function tests
+pnpm test:edge
+
+# Run a specific edge function test file
 cd supabase/functions
-deno test --allow-env --allow-net
+deno test --allow-env --allow-net tests/chat-api.test.ts
 ```
 
-Run specific test file:
-```bash
-deno test --allow-env --allow-net tests/chat-api-test.ts
-```
+Note: Frontend and edge function tests use different test runners (Jest and Deno Test respectively) due to their different runtime environments. Frontend tests run in Node.js/Jest, while edge function tests run in Deno.
 
 ### Building for Production
 ```bash

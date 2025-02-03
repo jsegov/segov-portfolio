@@ -70,31 +70,77 @@ async function getInitialContext() {
 export default function Chat() {
   const [isOpen, setIsOpen] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat();
+  const [config, setConfig] = useState<{
+    apiUrl: string;
+    anonKey: string;
+    isConfigured: boolean;
+    error: string | null;
+  }>({
+    apiUrl: '',
+    anonKey: '',
+    isConfigured: false,
+    error: null,
+  });
 
   useEffect(() => {
-    getInitialContext().then(context => {
-      if (context && messages.length === 0) {
-        handleSubmit(new Event('submit') as any, { 
-          options: { 
-            body: { 
-              messages: [{ role: 'system', content: context }]
-            }
-          }
+    async function fetchConfig() {
+      try {
+        const response = await fetch('/api/chat-config');
+        const data = await response.json();
+        
+        if (!response.ok) {
+          throw new Error(data.error || 'Failed to fetch chat configuration');
+        }
+        
+        setConfig({
+          apiUrl: data.apiUrl,
+          anonKey: data.anonKey,
+          isConfigured: true,
+          error: null,
         });
+        console.log('Chat configuration loaded successfully');
+      } catch (error) {
+        const message = error instanceof Error ? error.message : 'Unknown error occurred';
+        console.error('Error fetching chat configuration:', message);
+        setConfig(prev => ({
+          ...prev,
+          error: message,
+        }));
       }
-    });
+    }
+
+    fetchConfig();
   }, []);
 
+  const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat(
+    config.isConfigured ? {
+      api: config.apiUrl,
+      headers: {
+        Authorization: `Bearer ${config.anonKey}`,
+        'Content-Type': 'application/json',
+      },
+      onError: (error) => {
+        console.error('Chat API Error:', error);
+        setConfig(prev => ({
+          ...prev,
+          error: 'Failed to connect to chat service',
+        }));
+      }
+    } : { api: '' }
+  );
+
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
   }, [messages]);
 
   if (!isOpen) {
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-4 right-4 z-50 bg-black text-white rounded-none p-4 shadow-lg hover:bg-gray-900 transition-colors font-mono border border-white"
+        className="fixed bottom-4 right-4 p-2 bg-black border border-white rounded-none shadow-xl hover:bg-gray-900 transition-colors"
+        aria-label="Open chat"
       >
         <ChatIcon />
       </button>
@@ -114,23 +160,33 @@ export default function Chat() {
       </div>
       
       <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-black">
-        {messages.map((message) => (
-          <div
-            key={message.id}
-            className={`flex ${
-              message.role === 'assistant' ? 'justify-start' : 'justify-end'
-            }`}
-          >
-            <div
-              className={`max-w-[80%] p-1 ${
-                message.role === 'assistant' ? 'text-white' : 'text-gray-300'
-              }`}
-            >
-              {message.content}
-            </div>
-          </div>
-        ))}
-        {isLoading && <LoadingDots />}
+        {config.error ? (
+          <div className="text-red-500 text-sm">{config.error}</div>
+        ) : (
+          <>
+            {messages.map((message) => (
+              <div
+                key={message.id}
+                className={`flex ${
+                  message.role === 'assistant' ? 'justify-start' : 'justify-end'
+                }`}
+              >
+                <div
+                  className={`max-w-[80%] p-1 ${
+                    message.role === 'assistant' ? 'text-white' : 'text-gray-300'
+                  }`}
+                >
+                  {message.content}
+                </div>
+              </div>
+            ))}
+            {isLoading && (
+              <div className="flex justify-start p-1" data-testid="loading-dots">
+                <div className="text-white font-mono opacity-50">.</div>
+              </div>
+            )}
+          </>
+        )}
         <div ref={messagesEndRef} />
       </div>
 
@@ -139,9 +195,9 @@ export default function Chat() {
           <input
             value={input}
             onChange={handleInputChange}
-            placeholder="ask me anything"
+            placeholder={config.error ? 'Chat temporarily unavailable' : 'ask me anything'}
             className="w-full bg-black text-white focus:outline-none font-mono placeholder-gray-600 px-0"
-            disabled={isLoading}
+            disabled={isLoading || !!config.error}
           />
         </div>
       </form>

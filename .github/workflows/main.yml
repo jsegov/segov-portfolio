@@ -45,7 +45,7 @@ jobs:
         deno-version: v1.37.x
     
     - name: Install Dependencies
-      run: pnpm install --frozen-lockfile
+      run: pnpm install --no-frozen-lockfile
     
     - name: Run Frontend Tests
       run: pnpm test

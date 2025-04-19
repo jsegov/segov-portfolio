@@ -19,14 +19,24 @@ export class ChatConfigService {
   }
 
   async validateConnection(): Promise<void> {
-    const response = await fetch(`${this.supabaseUrl}/rest/v1/`, {
-      headers: {
-        'apikey': this.supabaseKey,
-      },
-    });
+    // Skip validation in production since we're using the Next.js API
+    if (process.env.NODE_ENV === 'production') {
+      return; // Skip validation in production
+    }
 
-    if (!response.ok) {
-      throw new Error('Failed to validate Supabase configuration');
+    try {
+      const response = await fetch(`${this.supabaseUrl}/rest/v1/`, {
+        headers: {
+          'apikey': this.supabaseKey,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Supabase returned error: ${response.status} ${response.statusText}`);
+      }
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      throw new Error(`Failed to validate Supabase configuration: ${errorMessage}`);
     }
   }
 

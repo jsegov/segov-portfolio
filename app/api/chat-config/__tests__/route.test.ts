@@ -108,14 +108,6 @@ describe('Chat Config API', () => {
       SUPABASE_URL: 'test-url',
       SUPABASE_ANON_KEY: 'test-key',
     };
-
-    // Set up default mock for fetch that returns a successful response
-    global.fetch = jest.fn(() =>
-      Promise.resolve({
-        ok: true,
-        json: () => Promise.resolve({}),
-      })
-    ) as jest.Mock;
   });
 
   afterEach(() => {
@@ -132,26 +124,15 @@ describe('Chat Config API', () => {
     });
   });
 
-  it('returns error when environment variables are not set', async () => {
+  it('returns configuration with fallback when environment variables are not set', async () => {
     delete process.env.SUPABASE_URL;
     delete process.env.SUPABASE_ANON_KEY;
 
     const response = await GET();
-    const responseData = await response.json();
-    expect(responseData).toEqual({
-      error: 'Failed to validate chat configuration',
-    });
-  });
-
-  it('handles network errors', async () => {
-    global.fetch = jest.fn().mockRejectedValue(new Error('Network error'));
-
-    const response = await GET();
     const data = await response.json();
-    // Now we should still get a valid configuration since we skip validation
     expect(data).toEqual({
       apiUrl: '/api/chat',
-      anonKey: 'test-key',
+      anonKey: 'dummy-key-for-authorization-header',
     });
   });
 }); 

@@ -6,7 +6,7 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts"
 
 import { serve } from "@std/http/server";
-import OpenAI from "openai";
+import OpenAI from "npm:openai";
 import { corsHeaders, handleCors } from "../_shared/cors.ts";
 import { validateContentType } from "../_shared/validators.ts";
 

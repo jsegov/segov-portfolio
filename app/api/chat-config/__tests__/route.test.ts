@@ -91,7 +91,7 @@ describe('ChatConfigService', () => {
     it('returns correct configuration', () => {
       const service = new ChatConfigService('test-url', 'test-key');
       expect(service.getConfig()).toEqual({
-        apiUrl: 'test-url/functions/v1/chat-api',
+        apiUrl: '/api/chat',
         anonKey: 'test-key',
       });
     });
@@ -99,7 +99,7 @@ describe('ChatConfigService', () => {
     it('handles trailing slash in URL', () => {
       const service = new ChatConfigService('test-url/', 'test-key');
       expect(service.getConfig()).toEqual({
-        apiUrl: 'test-url/functions/v1/chat-api',
+        apiUrl: '/api/chat',
         anonKey: 'test-key',
       });
     });
@@ -135,7 +135,7 @@ describe('Chat Config API', () => {
     const response = await GET();
     const data = await response.json();
     expect(data).toEqual({
-      apiUrl: 'test-url/functions/v1/chat-api',
+      apiUrl: '/api/chat',
       anonKey: 'test-key',
     });
   });

@@ -31,9 +31,8 @@ export class ChatConfigService {
   }
 
   getConfig(): ChatConfigResponse {
-    const baseUrl = this.formatBaseUrl();
     return {
-      apiUrl: `${baseUrl}/functions/v1/chat-api`,
+      apiUrl: '/api/chat',
       anonKey: this.supabaseKey,
     };
   }

@@ -1,5 +1,5 @@
-import { assertEquals } from "@std/assert";
-import { describe, it, beforeEach, afterEach } from "@std/testing/bdd";
+import { assertEquals } from "jsr:@std/assert@^0.218.2";
+import { describe, it, beforeEach, afterEach } from "jsr:@std/testing@^0.218.2/bdd";
 import { corsHeaders } from "../_shared/cors.ts";
 import { handler } from "../chat-api/index.ts";
 

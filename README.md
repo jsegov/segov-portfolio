@@ -9,30 +9,29 @@ A modern portfolio website featuring an AI-powered chat assistant that can answe
 Key features:
 - Interactive AI chat assistant which supports OpenAI and DeepSeek models
 - Real-time content aggregation from social media profiles
-- Serverless architecture with edge functions
 - Modern, responsive web interface
+- Server-side streaming API responses
 
 ## Technologies
 
 ### Backend
-- **Supabase Edge Functions** - Serverless functions running on Deno
+- **Next.js API Routes** - Server-side API endpoints
 - **OpenAI API** - Language model provider for the chat assistant
-- **Deno** - Runtime environment for edge functions
 - **TypeScript** - Type-safe programming language
 
 ### Frontend
 - **Next.js** - React framework for web applications
 - **React** - UI library
 - **TailwindCSS** - Utility-first CSS framework
+- **Vercel AI SDK** - Streaming AI responses
 
 ### Infrastructure
-- **Supabase** - Backend as a Service platform
+- **Supabase** - Backend as a Service platform for authentication and configuration
 - **Vercel** - Frontend hosting and deployment
 - **GitHub Actions** - CI/CD pipeline
 
 ### Development
-- **Jest** - Testing framework for frontend
-- **Deno Test** - Testing framework for edge functions
+- **Jest** - Testing framework
 - **ESLint** - Code linting
 - **Prettier** - Code formatting
 
@@ -41,8 +40,6 @@ Key features:
 ### Prerequisites
 - Node.js 18+
 - pnpm 8+
-- Deno 1.37+
-- Supabase CLI
 - OpenAI API key
 
 ### Environment Setup
@@ -88,51 +85,23 @@ SITE_URL=http://localhost:3000 # for development
 ```
 
 ### Running Locally
-1. Start Supabase services
-```bash
-supabase start
-```
-
-2. Run the development server
+1. Run the development server
 ```bash
 pnpm dev
-```
-
-3. Start the edge functions
-```bash
-cd supabase/functions
-deno task dev
 ```
 
 The application will be available at `http://localhost:3000`
 
 ### Testing
 
-#### Frontend Tests
-The frontend uses Jest for testing React components and API routes:
+#### Running Tests
 ```bash
-# Run all frontend tests
+# Run all tests
 pnpm test
 
-# Alternative command for frontend tests
-pnpm test:frontend
-
-# Run frontend tests in watch mode
+# Run tests in watch mode
 pnpm test:watch
 ```
-
-#### Edge Function Tests
-Edge functions use Deno's built-in testing framework and are located in `supabase/functions/tests/`:
-```bash
-# Run all edge function tests
-pnpm test:edge
-
-# Run a specific edge function test file
-cd supabase/functions
-deno test --allow-env --allow-net tests/chat-api.test.ts
-```
-
-Note: Frontend and edge function tests use different test runners (Jest and Deno Test respectively) due to their different runtime environments. Frontend tests run in Node.js/Jest, while edge function tests run in Deno.
 
 ### Building for Production
 ```bash
@@ -144,9 +113,8 @@ pnpm build
 ### CI/CD Pipeline
 
 The project uses GitHub Actions for continuous integration and deployment. The pipeline:
-1. Runs frontend and edge function tests
-2. Deploys edge functions to Supabase
-3. Deploys the frontend to Vercel
+1. Runs tests
+2. Deploys the frontend to Vercel
 
 Required GitHub Secrets:
 ```env
@@ -156,8 +124,6 @@ OPENAI_API_KEY=your_openai_api_key
 # Supabase
 SUPABASE_URL=your_supabase_project_url
 SUPABASE_ANON_KEY=your_supabase_anon_key
-SUPABASE_PROJECT_ID=your_project_id
-SUPABASE_ACCESS_TOKEN=your_access_token
 
 # Vercel
 VERCEL_TOKEN=your_vercel_token

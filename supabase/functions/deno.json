@@ -8,10 +8,6 @@
     "@supabase/supabase-js": "npm:@supabase/supabase-js@2.39.3",
     "openai": "npm:openai@4.28.0"
   },
-  "tasks": {
-    "test": "deno test --allow-env --allow-net tests/",
-    "dev": "deno run --allow-env --allow-net chat-api/index.ts"
-  },
   "compilerOptions": {
     "allowJs": true,
     "lib": ["deno.window"],

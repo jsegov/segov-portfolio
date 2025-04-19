@@ -1,8 +1,0 @@
-{
-  "compilerOptions": {
-    "allowJs": true,
-    "lib": ["deno.window", "dom", "dom.iterable", "dom.asynciterable"],
-    "types": ["./node_modules/@types/node/index.d.ts"]
-  },
-  "importMap": "./supabase/functions/deno.json"
-} 

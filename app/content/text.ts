@@ -25,8 +25,7 @@ export const text = {
         i designed and implemented microservices that automate quality assurance and release processes for tv shows and movies, 
         significantly enhancing release efficiency while maintaining prime video's high quality standards. 
         i led a project that expanded automated quality checks from 40 to over 300, making content release decisions more thorough and precise. 
-        through infrastructure optimization, i helped reduce aws costs by $7.2m annually. recently, i created a proof of concept for a gen ai 
-        powered release decision chatbot using claude 3 on aws bedrock, exploring how ai can streamline content operations.`,
+        through infrastructure optimization, i helped reduce aws costs by $7.2m annually.`,
         skills: ['java', 'typescript', 'aws', 'distributed systems']
       },
       workday: {

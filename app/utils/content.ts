@@ -59,7 +59,7 @@ async function getSocialMediaContent() {
 
 export async function getWebsiteContent() {
   try {
-    const headersList = headers();
+    const headersList = await headers();
     const domain = headersList.get('host') || 'localhost:3000';
     const protocol = process.env.NODE_ENV === 'development' ? 'http' : 'https';
     const baseUrl = `${protocol}://${domain}`;

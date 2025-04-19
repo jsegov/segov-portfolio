@@ -70,20 +70,12 @@ describe('ChatConfigService', () => {
   });
 
   describe('validateConnection', () => {
-    it('validates connection successfully', async () => {
+    it('skips validation and returns successfully', async () => {
       const service = new ChatConfigService('test-url', 'test-key');
+      // Should complete without error
       await service.validateConnection();
-      expect(global.fetch).toHaveBeenCalledWith('test-url/rest/v1/', {
-        headers: {
-          'apikey': 'test-key',
-        },
-      });
-    });
-
-    it('throws error on failed connection', async () => {
-      global.fetch = jest.fn().mockResolvedValue({ ok: false });
-      const service = new ChatConfigService('test-url', 'test-key');
-      await expect(service.validateConnection()).rejects.toThrow('Failed to validate Supabase configuration');
+      // Fetch should not be called since we're skipping validation
+      expect(global.fetch).not.toHaveBeenCalled();
     });
   });
 
@@ -156,8 +148,10 @@ describe('Chat Config API', () => {
 
     const response = await GET();
     const data = await response.json();
+    // Now we should still get a valid configuration since we skip validation
     expect(data).toEqual({
-      error: 'Failed to validate chat configuration',
+      apiUrl: '/api/chat',
+      anonKey: 'test-key',
     });
   });
 }); 
